@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: pf_jigu_ray_01
+  m_Shader: {fileID: 4800000, guid: f1dce2f1ab6f53e4f8724b70423f9417, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _DissolveTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DistortTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 3ba8af66b4d86c74bb47923ae2a748b2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _AlphaCutoff: 0.5
+    - _DissolveCustomdata: 0
+    - _DissolveIntensity: 0
+    - _DissolveSide: 0
+    - _Dissolve_On: 0
+    - _Dissolveside_On: 0
+    - _DistortIntensity: 0
+    - _DistortUspeed: 0
+    - _DistortVspeed: 0
+    - _Distort_on: 0
+    - _DoubleFaceorOne: 0
+    - _Intensity: 1
+    - _MainUspeed: 0
+    - _MainVspeed: 0
+    - _MaskUspeed: 0
+    - _MaskVspeed: 0
+    - _Noalpha: 0
+    - _NoiseIntensity: 0
+    - _NoiseUspeed: 0
+    - _NoiseVspeed: 0
+    - _Noise_on: 0
+    - _Opacity: 1
+    - _OpacityIntensity: 1
+    - _PowerIntensity: 1
+    - _Softandhardedges: 0
+    - _Softdissolve_On: 0
+    - _UVone: 0
+    - _Uspeed: 0
+    - _Vspeed: 0
+    - _ZTest: 2
+    m_Colors:
+    - _BackColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DissolvesideColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FrontColor: {r: 1, g: 1, b: 1, a: 1}
