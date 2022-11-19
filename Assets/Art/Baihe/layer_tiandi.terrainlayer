@@ -7,16 +7,16 @@ TerrainLayer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: layer_tiandi
-  m_DiffuseTexture: {fileID: 2800000, guid: 79681ad0f62a31647be6c01f3564995a, type: 3}
-  m_NormalMapTexture: {fileID: 0}
+  m_DiffuseTexture: {fileID: 2800000, guid: 1fd346032adc75c4a9527644f79bc9c3, type: 3}
+  m_NormalMapTexture: {fileID: 2800000, guid: 3eec4445dc8466a4eabaf01321e8cc05, type: 3}
   m_MaskMapTexture: {fileID: 2800000, guid: c7bccb4539b9a1d469e9de0f95754532, type: 3}
-  m_TileSize: {x: 1, y: 1}
-  m_TileOffset: {x: -0.28, y: -0.24}
+  m_TileSize: {x: 10, y: 10}
+  m_TileOffset: {x: 0, y: 0}
   m_Specular: {r: 1, g: 1, b: 1, a: 0}
   m_Metallic: 0
   m_Smoothness: 0
-  m_NormalScale: 1
+  m_NormalScale: 0.5
   m_DiffuseRemapMin: {x: 0, y: 0, z: 0, w: 0}
-  m_DiffuseRemapMax: {x: 1, y: 1, z: 1, w: 1}
+  m_DiffuseRemapMax: {x: 0.6784314, y: 0.6745098, z: 0.6745098, w: 1}
   m_MaskMapRemapMin: {x: 0, y: 0, z: 0, w: 0}
   m_MaskMapRemapMax: {x: 1, y: 1, z: 1, w: 1}

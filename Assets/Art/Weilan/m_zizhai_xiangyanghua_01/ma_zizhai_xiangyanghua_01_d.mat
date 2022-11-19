@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ma_zizhai_xiangyanghua_01_d
+  m_Shader: {fileID: 4800000, guid: 2600102c3179bc441b3b4958b012d8ca, type: 3}
+  m_ShaderKeywords: _ANIMATIONOFF_OFF _MAIN_LIGHT_SHADOWS _SHADOWS_SOFT
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _AO:
+        m_Texture: {fileID: 2800000, guid: 8e4ea12f0b137ee4891c51d0800cb4a8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 45be91dd5a2e64f4387f98bca9e72c2c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 35d2079fc13dc844f9b444715d226bb4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _ANIMATIONOFF: 0
+    - _AOON: 1
+    - _AnimationUpDown: 0
+    - _CULL: 2
+    - _DARK: 0
+    - _GrassWindDensity: 0.1
+    - _GrassWindDensity2: 0
+    - _METALLIC: 0
+    - _Metallic: 0.3
+    - _Smoothness: 0.3
+    - _Wind_movement: 60
+    - _Wind_movement2: 40
+    - _aorange: 1.5
+    - _pianyi: 0
+    - _specularPow: 50
+    - _specularRange: 0.2
+    m_Colors:
+    - _darkcolor: {r: 1, g: 1, b: 1, a: 1}
+    - _darkrange: {r: 1, g: 1, b: 0, a: 0}
+    - _reflectcol: {r: 0.77750087, g: 0.7924528, b: 0.7625489, a: 0.44313726}
+    - _vector4: {r: 0, g: 0, b: -1, a: 0}
