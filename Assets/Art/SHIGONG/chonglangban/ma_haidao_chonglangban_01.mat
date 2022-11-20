@@ -87,7 +87,7 @@ Material:
     - _HDRrange: 1
     - _METALLIC: 0
     - _Metallic: 0.3
-    - _OcclusionStrength: 1
+    - _OcclusionStrength: 0.556
     - _QueueOffset: 0
     - _REFLECTIONPROB: 0
     - _ReceiveShadows: 1

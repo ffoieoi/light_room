@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: ma_haidao_guoshu_01
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
-  m_ShaderKeywords: _ALPHATEST_ON _ENVIRONMENTREFLECTIONS_OFF _NORMALMAP _OCCLUSIONMAP
+  m_ShaderKeywords: _ALPHATEST_ON _NORMALMAP _OCCLUSIONMAP _SPECULAR_SETUP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 1
@@ -65,12 +65,12 @@ Material:
     - _BumpScale: 1
     - _CHANGECOL: 0
     - _CULL: 0
-    - _Cull: 2
+    - _Cull: 0
     - _Cutoff: 0.5
     - _DARK: 0
     - _DstBlend: 0
     - _Emission: 0
-    - _EnvironmentReflections: 0
+    - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -79,18 +79,18 @@ Material:
     - _HDRrange: 1
     - _METALLIC: 0
     - _Metallic: 0
-    - _OcclusionStrength: 0.508
+    - _OcclusionStrength: 0
     - _QueueOffset: 0
     - _REFLECTIONPROB: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.461
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
     - _Wind_movement: 30
     - _Wind_movement2: 250
-    - _WorkflowMode: 1
+    - _WorkflowMode: 0
     - _ZTest: 2
     - _ZWrite: 1
     - _aorange: 1.2
@@ -99,7 +99,7 @@ Material:
     - _specularPow: 50
     - _specularRange: 0.31
     m_Colors:
-    - _BaseColor: {r: 1, g: 0.8913895, b: 0.6650944, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _ChangeClo1: {r: 1, g: 1, b: 1, a: 1}
     - _ChangeClo2: {r: 1, g: 1, b: 1, a: 1}
     - _ChangeClo3: {r: 1, g: 1, b: 1, a: 1}

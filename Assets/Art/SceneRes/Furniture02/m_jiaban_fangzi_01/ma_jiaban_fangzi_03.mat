@@ -8,20 +8,23 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ma_jiaban_fangzi_03
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
-  m_ShaderKeywords: _ALPHATEST_ON _ENVIRONMENTREFLECTIONS_OFF _NORMALMAP
+  m_Shader: {fileID: 4800000, guid: 68f6242717466844fa8fad64d719ade9, type: 3}
+  m_ShaderKeywords: _ALPHATEST_ON _ENVIRONMENTREFLECTIONS_OFF _NORMALMAP _OCCLUSIONMAP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2450
-  stringTagMap:
-    RenderType: TransparentCutout
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _AO:
-        m_Texture: {fileID: 2800000, guid: 07ef43d32b814854092a9068ab174f79, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0681f840fd7b72a4eab15bc1bd0654fc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Albedo:
+        m_Texture: {fileID: 2800000, guid: a3018df790aaf2d47962230d8450b231, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -30,6 +33,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 2800000, guid: dd6423294ea65174a937ae5bba9ce8ab, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Emission:
+        m_Texture: {fileID: 2800000, guid: a3d71708a0cef1d4ab25d4ccad0607d8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -44,12 +51,20 @@ Material:
         m_Texture: {fileID: 2800000, guid: a3018df790aaf2d47962230d8450b231, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 2800000, guid: 4e9b59df3a9c34f4eb5b8778a2428025, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 2800000, guid: dd6423294ea65174a937ae5bba9ce8ab, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 053ceaa0a43065c48a4a319a1c575a67, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -58,7 +73,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _AOON: 1
+    - _AO_Scale: 0.811
     - _AlphaClip: 1
+    - _AlphaCutoff: 0.5
+    - _AlphaThreshold: 0.5
+    - _AlpthCllip: 0
     - _Blend: 0
     - _BumpScale: 1
     - _CHANGECOL: 0
@@ -73,7 +92,9 @@ Material:
     - _GlossyReflections: 0
     - _HDRrange: 1
     - _METALLIC: 1
+    - _Metalic: 0
     - _Metallic: 0
+    - _Normal_Scale: 1
     - _OcclusionStrength: 1
     - _QueueOffset: 0
     - _REFLECTIONPROB: 0
@@ -88,6 +109,7 @@ Material:
     - _ZWrite: 1
     - _aorange: 1.3
     - _bake: 0
+    - _smoothness_Scale: 1
     - _specularPow: 50
     - _specularRange: 2
     m_Colors:
