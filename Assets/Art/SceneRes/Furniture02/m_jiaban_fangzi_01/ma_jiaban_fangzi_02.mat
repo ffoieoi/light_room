@@ -78,7 +78,7 @@ Material:
     - _QueueOffset: 0
     - _REFLECTIONPROB: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.324
+    - _Smoothness: 0.421
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
