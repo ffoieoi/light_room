@@ -99,7 +99,7 @@ Material:
     - _Blend: 0
     - _BumpScale: 1
     - _CROSSPAN_INTERSECTIONOn: 1
-    - _CausticsBrightness: 0.2
+    - _CausticsBrightness: 2.42
     - _CausticsDistortion: 0.077
     - _CausticsOn: 1
     - _CausticsSpeed: 0.15
@@ -178,12 +178,12 @@ Material:
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SparkleIntensity: 0
-    - _SparkleSize: 0.302
+    - _SparkleSize: 0.293
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SunReflectionDistortion: 0.49
     - _SunReflectionPerturbance: 0.386
-    - _SunReflectionSize: 1
+    - _SunReflectionSize: 0.8
     - _SunReflectionStrength: 10
     - _Surface: 0
     - _TEXTURE_INTERSECTIONOn: 0
@@ -218,7 +218,7 @@ Material:
     - _ShallowColor: {r: 0.1745283, g: 1, b: 0.5509797, a: 0.3764706}
     - _SlopeParams: {r: 0.5, g: 4, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _TranslucencyParams: {r: 1, g: 2.51, b: 0, a: 0}
+    - _TranslucencyParams: {r: 1, g: 3.19, b: 0, a: 0}
     - _VertexColorMask: {r: 0, g: 0, b: 0, a: 1}
     - _WaterColor: {r: 0.21176466, g: 0.6745098, b: 1, a: 1}
     - _WaterShallowColor: {r: 0, g: 0.9394503, b: 1, a: 1}
