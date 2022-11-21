@@ -8,14 +8,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ma_haidao_guoshu_01
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
-  m_ShaderKeywords: _ALPHATEST_ON _NORMALMAP _OCCLUSIONMAP _SPECULAR_SETUP
+  m_Shader: {fileID: 4800000, guid: f2e3a7b410914234685950acb2f92881, type: 3}
+  m_ShaderKeywords: _ALPHACLIP_ON _ALPHATEST_ON _NORMALMAP _OCCLUSIONMAP _SPECULAR_SETUP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 1
-  m_CustomRenderQueue: 2450
-  stringTagMap:
-    RenderType: TransparentCutout
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -24,12 +23,20 @@ Material:
         m_Texture: {fileID: 2800000, guid: b2a18434a88a24f4b9020e3d4c85c03a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Albedo:
+        m_Texture: {fileID: 2800000, guid: 62265a68a3275e242ae5a1d8d493a9d2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: 62265a68a3275e242ae5a1d8d493a9d2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 2800000, guid: 79e291937969aa048bbfd0bb7390b7e8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Emission:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -44,8 +51,16 @@ Material:
         m_Texture: {fileID: 2800000, guid: 62265a68a3275e242ae5a1d8d493a9d2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Mask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 2800000, guid: 79e291937969aa048bbfd0bb7390b7e8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -59,12 +74,15 @@ Material:
     m_Floats:
     - _ANIMATIONOFF: 0
     - _AOON: 1
+    - _AO_Scale: 1
     - _AlphaClip: 1
+    - _AlphaCutoff: 0.5
     - _AnimationUpDown: 0
     - _Blend: 0
     - _BumpScale: 1
     - _CHANGECOL: 0
     - _CULL: 0
+    - _ColorScale: 1
     - _Cull: 0
     - _Cutoff: 0.5
     - _DARK: 0
@@ -78,7 +96,9 @@ Material:
     - _GrassWindDensity2: 0.05
     - _HDRrange: 1
     - _METALLIC: 0
+    - _Metalic: 0
     - _Metallic: 0
+    - _Normal_Scale: 1
     - _OcclusionStrength: 0
     - _QueueOffset: 0
     - _REFLECTIONPROB: 0
@@ -88,6 +108,8 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _Threshold: 0.5
+    - _UseMaskTexAO: 0
     - _Wind_movement: 30
     - _Wind_movement2: 250
     - _WorkflowMode: 0
@@ -96,6 +118,7 @@ Material:
     - _aorange: 1.2
     - _bake: 0
     - _pianyi: 0
+    - _smoothness_Scale: 0.411
     - _specularPow: 50
     - _specularRange: 0.31
     m_Colors:
