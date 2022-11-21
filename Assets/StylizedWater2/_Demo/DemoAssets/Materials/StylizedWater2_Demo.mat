@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: StylizedWater2_Demo
   m_Shader: {fileID: 4800000, guid: f04c9486b297dd848909db26983c9ddb, type: 3}
-  m_ShaderKeywords: ADVANCED_LIGHTING _ADVANCED_SHADING _CAUSTICS _DEPTH_TEX _DISTANCE_NORMALS
+  m_ShaderKeywords: ADVANCED_LIGHTING _ADVANCED_SHADING _DEPTH_TEX _DISTANCE_NORMALS
     _FOAM _NORMALMAP _REFRACTION _SHARP_INERSECTION _SIMPLE_LIGHTING _TRANSLUCENCY
     _UNLIT _WAVES _WORLDSPACEUV_ON
   m_LightmapFlags: 4
@@ -100,8 +100,8 @@ Material:
     - _BumpScale: 1
     - _CROSSPAN_INTERSECTIONOn: 1
     - _CausticsBrightness: 2.42
-    - _CausticsDistortion: 0.077
-    - _CausticsOn: 1
+    - _CausticsDistortion: 0
+    - _CausticsOn: 0
     - _CausticsSpeed: 0.15
     - _CausticsTiling: 0.3
     - _CrossPan_IntersectionOn: 0

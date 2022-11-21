@@ -20,11 +20,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Tex:
-        m_Texture: {fileID: 8900000, guid: a02fcd678d7e96744be7b1b82e2c16d9, type: 3}
+        m_Texture: {fileID: 8900000, guid: e290e7a5bdcf75048aeaf8f97eb85966, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Exposure: 0.5
-    - _Rotation: 360
+    - _Rotation: 141
     m_Colors:
     - _Tint: {r: 0.9024564, g: 0.9324281, b: 0.9811321, a: 0.5}

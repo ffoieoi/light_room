@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ma_shuwu_fangzi_fg_transparent
+  m_Shader: {fileID: 4800000, guid: d2966e380c36e3b4987cc6caed9434e9, type: 3}
+  m_ShaderKeywords: _MAIN_LIGHT_SHADOWS _REFLECTIONPROB_OFF _SHADOWS_SOFT
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 3000
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 1d7fdaabfdcdcd940a4fd6c7caec5b0f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 94fdfbc17fef380478ac6646ef8fe462, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Emissionmap:
+        m_Texture: {fileID: 2800000, guid: e29b3a679b1e23e4989711acc4df5892, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 2800000, guid: 873ed26c349158740af9c984e5d7fd02, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _CHANGECOL: 0
+    - _CULL: 2
+    - _Cull: 1
+    - _Emission: 1
+    - _HDRrange: 12
+    - _METALLIC: 1
+    - _Metallic: 1
+    - _REFLECTIONPROB: 0
+    - _Smoothness: 1
+    - _ZWrite: 0
+    - _alphaScale: 1
+    - _bake: 0
+    - _lightRange: 1
+    - _specularPow: 50
+    - _specularRange: 1.3
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ChangeClo1: {r: 1, g: 1, b: 1, a: 1}
+    - _ChangeClo2: {r: 1, g: 1, b: 1, a: 1}
+    - _ChangeClo3: {r: 1, g: 1, b: 1, a: 1}
+    - _ChangeClo4: {r: 1, g: 1, b: 1, a: 1}
+    - _TilingOffset: {r: 1, g: 1, b: 0, a: 0}
+    - _reflectcol: {r: 0.6132076, g: 0.6132076, b: 0.6132076, a: 0.2}
+    - _shadowDeviation: {r: 0, g: 0, b: 0, a: 0}
+    - _shadowpianyi: {r: 0, g: 0, b: 0, a: 0}
