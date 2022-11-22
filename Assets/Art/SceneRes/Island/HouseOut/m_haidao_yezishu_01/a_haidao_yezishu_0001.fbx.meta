@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bc12b2acb9a08864db5011fe15872864
+guid: d4864cc7eec934b4ca97195d9a604864
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable: []
@@ -8,11 +8,6 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: ma_haidao_yezishu_01
-    second: {fileID: 2100000, guid: da05585b98d50fd45b21ed763e12d8fa, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: ma_haidao_yezishu_03
     second: {fileID: 2100000, guid: da05585b98d50fd45b21ed763e12d8fa, type: 2}
   materials:
     materialImportMode: 1
@@ -79,7 +74,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 1
+  importAnimation: 0
   humanDescription:
     serializedVersion: 3
     human: []
@@ -98,7 +93,7 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   avatarSetup: 0
   additionalBone: 0
