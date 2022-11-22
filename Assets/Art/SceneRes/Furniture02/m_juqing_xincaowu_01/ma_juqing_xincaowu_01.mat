@@ -107,7 +107,7 @@ Material:
     - _METALLIC: 1
     - _Metalic: 1.917
     - _Metallic: 1
-    - _Normal_Scale: 0.25
+    - _Normal_Scale: 0.5
     - _OcclusionStrength: 0.527
     - _QueueOffset: 0
     - _REFLECTIONPROB: 0

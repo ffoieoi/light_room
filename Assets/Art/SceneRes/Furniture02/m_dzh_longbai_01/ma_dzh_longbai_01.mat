@@ -81,12 +81,24 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _TextureSample7:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Variation1:
         m_Texture: {fileID: 2800000, guid: d4aed65cfd7730c408a51ab262050a35, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _VariationMask:
         m_Texture: {fileID: 2800000, guid: 259658e12a19d994fa8825e59c480e5f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _skin_lut_1024:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -115,7 +127,7 @@ Material:
     - _Metallic: 0
     - _MinNew: 0.759
     - _MinOld: -0.478
-    - _Normal_Scale: 0.3
+    - _Normal_Scale: 0.5
     - _OcclusionStrength: 0.2
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -138,7 +150,9 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FackLight: {r: 0, g: 0.5, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _TTTTTT: {r: 0, g: 0, b: 0, a: 0}
     - _VariationColor: {r: 0.80477035, g: 0.93333334, b: 0.39607838, a: 0}
     - _darkcolor: {r: 1, g: 1, b: 1, a: 1}
     - _darkrange: {r: 1, g: 1, b: 0, a: 0}

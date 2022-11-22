@@ -8,9 +8,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ma_guanmu_zhibei_06
-  m_Shader: {fileID: 4800000, guid: 68f6242717466844fa8fad64d719ade9, type: 3}
+  m_Shader: {fileID: 4800000, guid: f2e3a7b410914234685950acb2f92881, type: 3}
   m_ShaderKeywords: _ALPHACLIP_ON _ALPHATEST_ON _ENVIRONMENTREFLECTIONS_OFF _NORMALMAP
-    _USEMASKTEXAO_ON
+    _THICKNESS_ON _USEMASKTEXAO_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 1
@@ -34,6 +34,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 2800000, guid: 68f16c50adcbb4e4cab0deb5ec443d83, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Emission:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
@@ -64,6 +68,26 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _TextureSample7:
+        m_Texture: {fileID: 2800000, guid: e1f577742d975cc4eb9f27463b788e7c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Variation1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _VariationMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _skin_lut_1024:
+        m_Texture: {fileID: 2800000, guid: 93d879489f4220c42ad496a0832e94c6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _ANIMATIONOFF: 0
     - _AOON: 0
@@ -78,6 +102,7 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DARK: 0
+    - _Distortion: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 0
     - _GlossMapScale: 0
@@ -85,9 +110,17 @@ Material:
     - _GlossyReflections: 0
     - _GrassWindDensity: 0
     - _GrassWindDensity2: 0.02
+    - _LTAmbine: 1
+    - _LTAttenuation: 0.108
+    - _LTPow: 1
+    - _LTScale: 59.8
     - _METALLIC: 0
+    - _MaxNew: 1
+    - _MaxOld: -1
     - _Metalic: 0
     - _Metallic: 0
+    - _MinNew: 0
+    - _MinOld: 0
     - _Normal_Scale: 0.5
     - _OcclusionStrength: 1
     - _QueueOffset: 0
@@ -97,6 +130,9 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _TTTPOW: 1.13
+    - _TTTScale: 4.6
+    - _Thickness: 1
     - _Threshold: 0.5
     - _UseMaskTexAO: 1
     - _Wind_movement: 20
@@ -105,14 +141,18 @@ Material:
     - _ZWrite: 1
     - _aorange: 1.14
     - _pianyi: 0
-    - _smoothness_Scale: 0.142
+    - _smoothness_Scale: 0.248
     - _specularPow: 50
     - _specularRange: 2
     m_Colors:
-    - _BaseColor: {r: 1, g: 0.94444877, b: 0.6462264, a: 1}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FackLight: {r: 0, g: 0.5, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _TTTTTT: {r: 1, g: 0.3361776, b: 0, a: 0}
+    - _TestLightColor: {r: 0.38679248, g: 0.24614048, b: 0, a: 0}
+    - _VariationColor: {r: 0.9339623, g: 0.82505447, b: 0.39649338, a: 0}
     - _darkcolor: {r: 1, g: 1, b: 1, a: 1}
     - _darkrange: {r: 1, g: 1, b: 0, a: 0}
     - _reflectcol: {r: 0, g: 0, b: 0, a: 0.2}

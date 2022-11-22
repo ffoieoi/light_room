@@ -22,9 +22,20 @@ Shader "LightRoom/ASE/Foliges"
 		_Variation1("Variation", 2D) = "white" {}
 		_VariationColor("VariationColor", Color) = (0.9339623,0.8250544,0.3964934,0)
 		_MinOld("MinOld", Range( -1 , 1)) = 0
-		_MaxOld("MaxOld", Range( -1 , 1)) = 1
+		_MaxOld("MaxOld", Range( -1 , 1)) = -1
 		_MinNew("MinNew", Range( -1 , 1)) = 0
-		[ASEEnd]_MaxNew("MaxNew", Range( -1 , 1)) = 1
+		_MaxNew("MaxNew", Range( -1 , 1)) = 1
+		_TextureSample7("Texture Sample 7", 2D) = "white" {}
+		[Toggle(_THICKNESS_ON)] _Thickness("Thickness", Float) = 0
+		_Distortion("Distortion", Range( 0 , 3)) = 1
+		_LTScale("LTScale", Range( 0.01 , 100)) = 1
+		_LTPow("LTPow", Range( 0.01 , 100)) = 1
+		_LTAmbine("LTAmbine", Range( 0 , 1)) = 1
+		_TestLightColor("TestLightColor", Color) = (1,1,1,0)
+		_LTAttenuation("LTAttenuation", Range( 0 , 1)) = 0.5
+		_TTTPOW("TTTPOW", Range( 0 , 10)) = 1
+		[ASEEnd]_TTTScale("TTTScale", Range( 0 , 30)) = 1
+		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
 		//_TransmissionShadow( "Transmission Shadow", Range( 0, 1 ) ) = 0.5
 		//_TransStrength( "Trans Strength", Range( 0, 50 ) ) = 1
@@ -217,6 +228,8 @@ Shader "LightRoom/ASE/Foliges"
 			    #define ENABLE_TERRAIN_PERPIXEL_NORMAL
 			#endif
 
+			#define ASE_NEEDS_FRAG_WORLD_VIEW_DIR
+			#pragma shader_feature_local _THICKNESS_ON
 			#pragma shader_feature_local _USEMASKTEXAO_ON
 
 
@@ -252,18 +265,27 @@ Shader "LightRoom/ASE/Foliges"
 
 			CBUFFER_START(UnityPerMaterial)
 			float4 _BaseColor;
-			float4 _Albedo_ST;
-			float4 _VariationColor;
-			float4 _VariationMask_ST;
-			float4 _Variation1_ST;
+			float4 _Emission_ST;
 			float4 _AO_ST;
 			float4 _Mask_ST;
 			float4 _Normal_ST;
-			float4 _Emission_ST;
+			float4 _TextureSample7_ST;
+			float4 _Variation1_ST;
+			float4 _VariationMask_ST;
+			float4 _VariationColor;
+			float4 _Albedo_ST;
+			float4 _TestLightColor;
+			float _TTTScale;
+			float _TTTPOW;
+			float _LTAttenuation;
+			float _LTScale;
+			float _LTPow;
+			float _Distortion;
+			float _AO_Scale;
+			float _LTAmbine;
 			float _smoothness_Scale;
 			float _Metalic;
 			float _MaxNew;
-			float _AO_Scale;
 			float _MinNew;
 			float _MaxOld;
 			float _MinOld;
@@ -292,10 +314,11 @@ Shader "LightRoom/ASE/Foliges"
 			sampler2D _Albedo;
 			sampler2D _VariationMask;
 			sampler2D _Variation1;
-			sampler2D _Normal;
-			sampler2D _Emission;
 			sampler2D _Mask;
 			sampler2D _AO;
+			sampler2D _Normal;
+			sampler2D _TextureSample7;
+			sampler2D _Emission;
 
 
 			
@@ -500,16 +523,6 @@ Shader "LightRoom/ASE/Foliges"
 				float2 uv_Variation1 = IN.ase_texcoord7.xy * _Variation1_ST.xy + _Variation1_ST.zw;
 				float VariationMask61 = saturate( ( tex2DNode53.r * (_MinNew + (tex2D( _Variation1, uv_Variation1 ).g - _MinOld) * (_MaxNew - _MinNew) / (_MaxOld - _MinOld)) ) );
 				float4 lerpResult64 = lerp( ( _BaseColor * tex2DNode10 ) , _VariationColor , VariationMask61);
-				float3 Albedo25 = saturate( (lerpResult64).rgb );
-				
-				float2 uv_Normal = IN.ase_texcoord7.xy * _Normal_ST.xy + _Normal_ST.zw;
-				float3 unpack14 = UnpackNormalScale( tex2D( _Normal, uv_Normal ), _Normal_Scale );
-				unpack14.z = lerp( 1, unpack14.z, saturate(_Normal_Scale) );
-				float3 Normal27 = unpack14;
-				
-				float2 uv_Emission = IN.ase_texcoord7.xy * _Emission_ST.xy + _Emission_ST.zw;
-				float4 Emission28 = tex2D( _Emission, uv_Emission );
-				
 				float2 uv_Mask = IN.ase_texcoord7.xy * _Mask_ST.xy + _Mask_ST.zw;
 				float4 tex2DNode11 = tex2D( _Mask, uv_Mask );
 				float2 uv2_AO = IN.ase_texcoord7.zw * _AO_ST.xy + _AO_ST.zw;
@@ -521,6 +534,25 @@ Shader "LightRoom/ASE/Foliges"
 				float lerpResult47 = lerp( 1.0 , staticSwitch49 , _AO_Scale);
 				float4 appendResult41 = (float4(( _Metalic * tex2DNode11.r ) , ( tex2DNode11.a * _smoothness_Scale ) , lerpResult47 , 0.0));
 				float4 MeSmAO48 = appendResult41;
+				float2 uv_Normal = IN.ase_texcoord7.xy * _Normal_ST.xy + _Normal_ST.zw;
+				float3 unpack14 = UnpackNormalScale( tex2D( _Normal, uv_Normal ), _Normal_Scale );
+				unpack14.z = lerp( 1, unpack14.z, saturate(_Normal_Scale) );
+				float3 Normal27 = unpack14;
+				float dotResult92 = dot( WorldViewDirection , ( ( _MainLightPosition.xyz + ( Normal27 * _Distortion ) ) * -1.0 ) );
+				float2 uv_TextureSample7 = IN.ase_texcoord7.xy * _TextureSample7_ST.xy + _TextureSample7_ST.zw;
+				float Thichness122 = saturate( ( pow( tex2D( _TextureSample7, uv_TextureSample7 ).r , _TTTPOW ) * _TTTScale ) );
+				float4 AlbedoColor111 = lerpResult64;
+				float4 TestColor104 = saturate( ( ( ( ( (MeSmAO48).z * _LTAmbine ) + ( pow( saturate( dotResult92 ) , _LTPow ) * _LTScale ) ) * _LTAttenuation * Thichness122 ) * _TestLightColor * AlbedoColor111 ) );
+				#ifdef _THICKNESS_ON
+				float4 staticSwitch84 = ( TestColor104 + lerpResult64 );
+				#else
+				float4 staticSwitch84 = lerpResult64;
+				#endif
+				float3 Albedo25 = saturate( (staticSwitch84).rgb );
+				
+				float2 uv_Emission = IN.ase_texcoord7.xy * _Emission_ST.xy + _Emission_ST.zw;
+				float4 Emission28 = tex2D( _Emission, uv_Emission );
+				
 				float4 break42 = MeSmAO48;
 				
 				float Alpha26 = tex2DNode10.a;
@@ -742,18 +774,27 @@ Shader "LightRoom/ASE/Foliges"
 
 			CBUFFER_START(UnityPerMaterial)
 			float4 _BaseColor;
-			float4 _Albedo_ST;
-			float4 _VariationColor;
-			float4 _VariationMask_ST;
-			float4 _Variation1_ST;
+			float4 _Emission_ST;
 			float4 _AO_ST;
 			float4 _Mask_ST;
 			float4 _Normal_ST;
-			float4 _Emission_ST;
+			float4 _TextureSample7_ST;
+			float4 _Variation1_ST;
+			float4 _VariationMask_ST;
+			float4 _VariationColor;
+			float4 _Albedo_ST;
+			float4 _TestLightColor;
+			float _TTTScale;
+			float _TTTPOW;
+			float _LTAttenuation;
+			float _LTScale;
+			float _LTPow;
+			float _Distortion;
+			float _AO_Scale;
+			float _LTAmbine;
 			float _smoothness_Scale;
 			float _Metalic;
 			float _MaxNew;
-			float _AO_Scale;
 			float _MinNew;
 			float _MaxOld;
 			float _MinOld;
@@ -1032,18 +1073,27 @@ Shader "LightRoom/ASE/Foliges"
 
 			CBUFFER_START(UnityPerMaterial)
 			float4 _BaseColor;
-			float4 _Albedo_ST;
-			float4 _VariationColor;
-			float4 _VariationMask_ST;
-			float4 _Variation1_ST;
+			float4 _Emission_ST;
 			float4 _AO_ST;
 			float4 _Mask_ST;
 			float4 _Normal_ST;
-			float4 _Emission_ST;
+			float4 _TextureSample7_ST;
+			float4 _Variation1_ST;
+			float4 _VariationMask_ST;
+			float4 _VariationColor;
+			float4 _Albedo_ST;
+			float4 _TestLightColor;
+			float _TTTScale;
+			float _TTTPOW;
+			float _LTAttenuation;
+			float _LTScale;
+			float _LTPow;
+			float _Distortion;
+			float _AO_Scale;
+			float _LTAmbine;
 			float _smoothness_Scale;
 			float _Metalic;
 			float _MaxNew;
-			float _AO_Scale;
 			float _MinNew;
 			float _MaxOld;
 			float _MinOld;
@@ -1278,7 +1328,10 @@ Shader "LightRoom/ASE/Foliges"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 
-			
+			#define ASE_NEEDS_FRAG_WORLD_POSITION
+			#pragma shader_feature_local _THICKNESS_ON
+			#pragma shader_feature_local _USEMASKTEXAO_ON
+
 
 			#pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
@@ -1308,18 +1361,27 @@ Shader "LightRoom/ASE/Foliges"
 
 			CBUFFER_START(UnityPerMaterial)
 			float4 _BaseColor;
-			float4 _Albedo_ST;
-			float4 _VariationColor;
-			float4 _VariationMask_ST;
-			float4 _Variation1_ST;
+			float4 _Emission_ST;
 			float4 _AO_ST;
 			float4 _Mask_ST;
 			float4 _Normal_ST;
-			float4 _Emission_ST;
+			float4 _TextureSample7_ST;
+			float4 _Variation1_ST;
+			float4 _VariationMask_ST;
+			float4 _VariationColor;
+			float4 _Albedo_ST;
+			float4 _TestLightColor;
+			float _TTTScale;
+			float _TTTPOW;
+			float _LTAttenuation;
+			float _LTScale;
+			float _LTPow;
+			float _Distortion;
+			float _AO_Scale;
+			float _LTAmbine;
 			float _smoothness_Scale;
 			float _Metalic;
 			float _MaxNew;
-			float _AO_Scale;
 			float _MinNew;
 			float _MaxOld;
 			float _MinOld;
@@ -1348,6 +1410,10 @@ Shader "LightRoom/ASE/Foliges"
 			sampler2D _Albedo;
 			sampler2D _VariationMask;
 			sampler2D _Variation1;
+			sampler2D _Mask;
+			sampler2D _AO;
+			sampler2D _Normal;
+			sampler2D _TextureSample7;
 			sampler2D _Emission;
 
 
@@ -1360,9 +1426,7 @@ Shader "LightRoom/ASE/Foliges"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
 				o.ase_texcoord2.xy = v.ase_texcoord.xy;
-				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord2.zw = 0;
+				o.ase_texcoord2.zw = v.texcoord1.xy;
 				
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.vertex.xyz;
@@ -1504,7 +1568,34 @@ Shader "LightRoom/ASE/Foliges"
 				float2 uv_Variation1 = IN.ase_texcoord2.xy * _Variation1_ST.xy + _Variation1_ST.zw;
 				float VariationMask61 = saturate( ( tex2DNode53.r * (_MinNew + (tex2D( _Variation1, uv_Variation1 ).g - _MinOld) * (_MaxNew - _MinNew) / (_MaxOld - _MinOld)) ) );
 				float4 lerpResult64 = lerp( ( _BaseColor * tex2DNode10 ) , _VariationColor , VariationMask61);
-				float3 Albedo25 = saturate( (lerpResult64).rgb );
+				float2 uv_Mask = IN.ase_texcoord2.xy * _Mask_ST.xy + _Mask_ST.zw;
+				float4 tex2DNode11 = tex2D( _Mask, uv_Mask );
+				float2 uv2_AO = IN.ase_texcoord2.zw * _AO_ST.xy + _AO_ST.zw;
+				#ifdef _USEMASKTEXAO_ON
+				float staticSwitch49 = ( tex2DNode11.g * _AO_Scale );
+				#else
+				float staticSwitch49 = ( tex2D( _AO, uv2_AO ).r * _AO_Scale );
+				#endif
+				float lerpResult47 = lerp( 1.0 , staticSwitch49 , _AO_Scale);
+				float4 appendResult41 = (float4(( _Metalic * tex2DNode11.r ) , ( tex2DNode11.a * _smoothness_Scale ) , lerpResult47 , 0.0));
+				float4 MeSmAO48 = appendResult41;
+				float3 ase_worldViewDir = ( _WorldSpaceCameraPos.xyz - WorldPosition );
+				ase_worldViewDir = normalize(ase_worldViewDir);
+				float2 uv_Normal = IN.ase_texcoord2.xy * _Normal_ST.xy + _Normal_ST.zw;
+				float3 unpack14 = UnpackNormalScale( tex2D( _Normal, uv_Normal ), _Normal_Scale );
+				unpack14.z = lerp( 1, unpack14.z, saturate(_Normal_Scale) );
+				float3 Normal27 = unpack14;
+				float dotResult92 = dot( ase_worldViewDir , ( ( _MainLightPosition.xyz + ( Normal27 * _Distortion ) ) * -1.0 ) );
+				float2 uv_TextureSample7 = IN.ase_texcoord2.xy * _TextureSample7_ST.xy + _TextureSample7_ST.zw;
+				float Thichness122 = saturate( ( pow( tex2D( _TextureSample7, uv_TextureSample7 ).r , _TTTPOW ) * _TTTScale ) );
+				float4 AlbedoColor111 = lerpResult64;
+				float4 TestColor104 = saturate( ( ( ( ( (MeSmAO48).z * _LTAmbine ) + ( pow( saturate( dotResult92 ) , _LTPow ) * _LTScale ) ) * _LTAttenuation * Thichness122 ) * _TestLightColor * AlbedoColor111 ) );
+				#ifdef _THICKNESS_ON
+				float4 staticSwitch84 = ( TestColor104 + lerpResult64 );
+				#else
+				float4 staticSwitch84 = lerpResult64;
+				#endif
+				float3 Albedo25 = saturate( (staticSwitch84).rgb );
 				
 				float2 uv_Emission = IN.ase_texcoord2.xy * _Emission_ST.xy + _Emission_ST.zw;
 				float4 Emission28 = tex2D( _Emission, uv_Emission );
@@ -1567,7 +1658,10 @@ Shader "LightRoom/ASE/Foliges"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/UnityInstancing.hlsl"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			
-			
+			#define ASE_NEEDS_FRAG_WORLD_POSITION
+			#pragma shader_feature_local _THICKNESS_ON
+			#pragma shader_feature_local _USEMASKTEXAO_ON
+
 
 			#pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
 
@@ -1576,6 +1670,7 @@ Shader "LightRoom/ASE/Foliges"
 				float4 vertex : POSITION;
 				float3 ase_normal : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_texcoord1 : TEXCOORD1;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
 
@@ -1595,18 +1690,27 @@ Shader "LightRoom/ASE/Foliges"
 
 			CBUFFER_START(UnityPerMaterial)
 			float4 _BaseColor;
-			float4 _Albedo_ST;
-			float4 _VariationColor;
-			float4 _VariationMask_ST;
-			float4 _Variation1_ST;
+			float4 _Emission_ST;
 			float4 _AO_ST;
 			float4 _Mask_ST;
 			float4 _Normal_ST;
-			float4 _Emission_ST;
+			float4 _TextureSample7_ST;
+			float4 _Variation1_ST;
+			float4 _VariationMask_ST;
+			float4 _VariationColor;
+			float4 _Albedo_ST;
+			float4 _TestLightColor;
+			float _TTTScale;
+			float _TTTPOW;
+			float _LTAttenuation;
+			float _LTScale;
+			float _LTPow;
+			float _Distortion;
+			float _AO_Scale;
+			float _LTAmbine;
 			float _smoothness_Scale;
 			float _Metalic;
 			float _MaxNew;
-			float _AO_Scale;
 			float _MinNew;
 			float _MaxOld;
 			float _MinOld;
@@ -1635,6 +1739,10 @@ Shader "LightRoom/ASE/Foliges"
 			sampler2D _Albedo;
 			sampler2D _VariationMask;
 			sampler2D _Variation1;
+			sampler2D _Mask;
+			sampler2D _AO;
+			sampler2D _Normal;
+			sampler2D _TextureSample7;
 
 
 			
@@ -1646,9 +1754,7 @@ Shader "LightRoom/ASE/Foliges"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO( o );
 
 				o.ase_texcoord2.xy = v.ase_texcoord.xy;
-				
-				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord2.zw = 0;
+				o.ase_texcoord2.zw = v.ase_texcoord1.xy;
 				
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.vertex.xyz;
@@ -1688,6 +1794,7 @@ Shader "LightRoom/ASE/Foliges"
 				float4 vertex : INTERNALTESSPOS;
 				float3 ase_normal : NORMAL;
 				float4 ase_texcoord : TEXCOORD0;
+				float4 ase_texcoord1 : TEXCOORD1;
 
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 			};
@@ -1706,6 +1813,7 @@ Shader "LightRoom/ASE/Foliges"
 				o.vertex = v.vertex;
 				o.ase_normal = v.ase_normal;
 				o.ase_texcoord = v.ase_texcoord;
+				o.ase_texcoord1 = v.ase_texcoord1;
 				return o;
 			}
 
@@ -1745,6 +1853,7 @@ Shader "LightRoom/ASE/Foliges"
 				o.vertex = patch[0].vertex * bary.x + patch[1].vertex * bary.y + patch[2].vertex * bary.z;
 				o.ase_normal = patch[0].ase_normal * bary.x + patch[1].ase_normal * bary.y + patch[2].ase_normal * bary.z;
 				o.ase_texcoord = patch[0].ase_texcoord * bary.x + patch[1].ase_texcoord * bary.y + patch[2].ase_texcoord * bary.z;
+				o.ase_texcoord1 = patch[0].ase_texcoord1 * bary.x + patch[1].ase_texcoord1 * bary.y + patch[2].ase_texcoord1 * bary.z;
 				#if defined(ASE_PHONG_TESSELLATION)
 				float3 pp[3];
 				for (int i = 0; i < 3; ++i)
@@ -1787,7 +1896,34 @@ Shader "LightRoom/ASE/Foliges"
 				float2 uv_Variation1 = IN.ase_texcoord2.xy * _Variation1_ST.xy + _Variation1_ST.zw;
 				float VariationMask61 = saturate( ( tex2DNode53.r * (_MinNew + (tex2D( _Variation1, uv_Variation1 ).g - _MinOld) * (_MaxNew - _MinNew) / (_MaxOld - _MinOld)) ) );
 				float4 lerpResult64 = lerp( ( _BaseColor * tex2DNode10 ) , _VariationColor , VariationMask61);
-				float3 Albedo25 = saturate( (lerpResult64).rgb );
+				float2 uv_Mask = IN.ase_texcoord2.xy * _Mask_ST.xy + _Mask_ST.zw;
+				float4 tex2DNode11 = tex2D( _Mask, uv_Mask );
+				float2 uv2_AO = IN.ase_texcoord2.zw * _AO_ST.xy + _AO_ST.zw;
+				#ifdef _USEMASKTEXAO_ON
+				float staticSwitch49 = ( tex2DNode11.g * _AO_Scale );
+				#else
+				float staticSwitch49 = ( tex2D( _AO, uv2_AO ).r * _AO_Scale );
+				#endif
+				float lerpResult47 = lerp( 1.0 , staticSwitch49 , _AO_Scale);
+				float4 appendResult41 = (float4(( _Metalic * tex2DNode11.r ) , ( tex2DNode11.a * _smoothness_Scale ) , lerpResult47 , 0.0));
+				float4 MeSmAO48 = appendResult41;
+				float3 ase_worldViewDir = ( _WorldSpaceCameraPos.xyz - WorldPosition );
+				ase_worldViewDir = normalize(ase_worldViewDir);
+				float2 uv_Normal = IN.ase_texcoord2.xy * _Normal_ST.xy + _Normal_ST.zw;
+				float3 unpack14 = UnpackNormalScale( tex2D( _Normal, uv_Normal ), _Normal_Scale );
+				unpack14.z = lerp( 1, unpack14.z, saturate(_Normal_Scale) );
+				float3 Normal27 = unpack14;
+				float dotResult92 = dot( ase_worldViewDir , ( ( _MainLightPosition.xyz + ( Normal27 * _Distortion ) ) * -1.0 ) );
+				float2 uv_TextureSample7 = IN.ase_texcoord2.xy * _TextureSample7_ST.xy + _TextureSample7_ST.zw;
+				float Thichness122 = saturate( ( pow( tex2D( _TextureSample7, uv_TextureSample7 ).r , _TTTPOW ) * _TTTScale ) );
+				float4 AlbedoColor111 = lerpResult64;
+				float4 TestColor104 = saturate( ( ( ( ( (MeSmAO48).z * _LTAmbine ) + ( pow( saturate( dotResult92 ) , _LTPow ) * _LTScale ) ) * _LTAttenuation * Thichness122 ) * _TestLightColor * AlbedoColor111 ) );
+				#ifdef _THICKNESS_ON
+				float4 staticSwitch84 = ( TestColor104 + lerpResult64 );
+				#else
+				float4 staticSwitch84 = lerpResult64;
+				#endif
+				float3 Albedo25 = saturate( (staticSwitch84).rgb );
 				
 				float Alpha26 = tex2DNode10.a;
 				
@@ -1854,7 +1990,6 @@ Node;AmplifyShaderEditor.GetLocalVarNode;50;-1161.887,-899.1442;Inherit;False;25
 Node;AmplifyShaderEditor.GetLocalVarNode;51;-1167.295,-806.437;Inherit;False;27;Normal;1;0;OBJECT;;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.GetLocalVarNode;52;-1169.295,-726.437;Inherit;False;28;Emission;1;0;OBJECT;;False;1;COLOR;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1;-831.0129,-884.0377;Float;False;True;-1;2;UnityEditor.ShaderGraph.PBRMasterGUI;0;12;LightRoom/ASE/Foliges;94348b07e5e8bab40bd6c8a1e3df54cd;True;Forward;0;1;Forward;18;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;2;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;True;3;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;0;True;12;all;0;False;True;1;1;False;;0;False;;1;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;1;LightMode=UniversalForward;False;False;0;Hidden/InternalErrorShader;0;0;Standard;38;Workflow;1;0;Surface;0;0;  Refraction Model;0;0;  Blend;0;0;Two Sided;0;638046211065887638;Fragment Normal Space,InvertActionOnDeselection;0;0;Transmission;0;0;  Transmission Shadow;0.5,False,;0;Translucency;0;0;  Translucency Strength;1,False,;0;  Normal Distortion;0.5,False,;0;  Scattering;2,False,;0;  Direct;0.9,False,;0;  Ambient;0.1,False,;0;  Shadow;0.5,False,;0;Cast Shadows;1;0;  Use Shadow Threshold;0;0;Receive Shadows;1;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;_FinalColorxAlpha;0;0;Meta Pass;1;0;Override Baked GI;0;0;Extra Pre Pass;0;0;DOTS Instancing;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position,InvertActionOnDeselection;1;0;0;6;False;True;True;True;True;True;False;;False;0
-Node;AmplifyShaderEditor.GetLocalVarNode;43;-1286.967,-634.3631;Inherit;False;48;MeSmAO;1;0;OBJECT;;False;1;FLOAT4;0
 Node;AmplifyShaderEditor.GetLocalVarNode;29;-1165.035,-481.0862;Inherit;False;26;Alpha;1;0;OBJECT;;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;31;-1267.785,-393.9019;Inherit;False;Property;_Threshold;Threshold;10;0;Create;True;0;0;0;False;0;False;0.5;0.5;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;12;-2567.18,225.3862;Inherit;False;Property;_smoothness_Scale;smoothness_Scale;7;0;Create;True;0;0;0;False;0;False;1;1;0;1;0;1;FLOAT;0
@@ -1865,11 +2000,10 @@ Node;AmplifyShaderEditor.TexturePropertyNode;56;-3051.967,1024.271;Inherit;True;
 Node;AmplifyShaderEditor.TextureCoordinatesNode;57;-2795.355,839.3176;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.TextureCoordinatesNode;58;-2794.967,1080.271;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode;67;-2502.464,1216.149;Inherit;False;Property;_MinOld;MinOld;15;0;Create;True;0;0;0;False;0;False;0;0;-1;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;68;-2503.464,1297.15;Inherit;False;Property;_MaxOld;MaxOld;16;0;Create;True;0;0;0;False;0;False;1;1;-1;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;68;-2503.464,1297.15;Inherit;False;Property;_MaxOld;MaxOld;16;0;Create;True;0;0;0;False;0;False;-1;1;-1;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;65;-2503.665,1384.428;Inherit;False;Property;_MinNew;MinNew;17;0;Create;True;0;0;0;False;0;False;0;0;-1;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;66;-2504.665,1465.428;Inherit;False;Property;_MaxNew;MaxNew;18;0;Create;True;0;0;0;False;0;False;1;1;-1;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SaturateNode;69;-1698.702,807.9841;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;61;-1506.052,800.632;Inherit;False;VariationMask;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;59;-1871.586,808.157;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TFHCRemapNode;60;-2096.764,868.6329;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;4;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;71;-2093.313,701.3176;Inherit;False;test;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
@@ -1878,9 +2012,51 @@ Node;AmplifyShaderEditor.SimpleMultiplyOpNode;23;-2344.43,-1111.685;Inherit;Fals
 Node;AmplifyShaderEditor.ColorNode;62;-2341.94,-1011.247;Inherit;False;Property;_VariationColor;VariationColor;14;0;Create;True;0;0;0;False;0;False;0.9339623,0.8250544,0.3964934,0;0.9339623,0.8250544,0.3964934,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.GetLocalVarNode;63;-2312.156,-842.4387;Inherit;False;61;VariationMask;1;0;OBJECT;;False;1;FLOAT;0
 Node;AmplifyShaderEditor.LerpOp;64;-2056.052,-1107.987;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.ComponentMaskNode;24;-1911.266,-1113.112;Inherit;False;True;True;True;False;1;0;COLOR;0,0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.SaturateNode;70;-1710.935,-1107.85;Inherit;False;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;25;-1576.39,-1112.695;Inherit;False;Albedo;-1;True;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.ComponentMaskNode;24;-1497.266,-1118.112;Inherit;False;True;True;True;False;1;0;COLOR;0,0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.SaturateNode;70;-1296.935,-1112.85;Inherit;False;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.RegisterLocalVarNode;25;-1162.39,-1117.695;Inherit;False;Albedo;-1;True;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.StaticSwitch;84;-1724.682,-1121.168;Inherit;False;Property;_Thickness;Thickness;20;0;Create;True;0;0;0;False;0;False;0;0;0;True;;Toggle;2;Key0;Key1;Create;True;True;All;9;1;COLOR;0,0,0,0;False;0;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;4;COLOR;0,0,0,0;False;5;COLOR;0,0,0,0;False;6;COLOR;0,0,0,0;False;7;COLOR;0,0,0,0;False;8;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.WorldSpaceLightDirHlpNode;86;-3099.26,-2273.686;Inherit;False;False;1;0;FLOAT;0;False;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
+Node;AmplifyShaderEditor.GetLocalVarNode;87;-3044.851,-2122.253;Inherit;False;27;Normal;1;0;OBJECT;;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;89;-2837.619,-2121.041;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.SimpleAddOpNode;88;-2664.619,-2275.041;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;93;-2499.774,-2275.14;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.RangedFloatNode;94;-2665.323,-2174.197;Inherit;False;Constant;_Float0;Float 0;24;0;Create;True;0;0;0;False;0;False;-1;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.ViewDirInputsCoordNode;91;-2548.809,-2453.229;Inherit;False;World;False;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
+Node;AmplifyShaderEditor.DotProductOpNode;92;-2336.281,-2299.199;Inherit;False;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;90;-3140.619,-2048.586;Inherit;False;Property;_Distortion;Distortion;21;0;Create;True;0;0;0;False;0;False;1;0;0;3;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SaturateNode;95;-2212.95,-2298.488;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.PowerNode;96;-2060.95,-2297.488;Inherit;False;False;2;0;FLOAT;0;False;1;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;98;-1897.382,-2296.29;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleAddOpNode;100;-1654.244,-2294.27;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;102;-1417.244,-2295.27;Inherit;False;3;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.ColorNode;105;-1511.759,-2111.075;Inherit;False;Property;_TestLightColor;TestLightColor;25;0;Create;True;0;0;0;False;0;False;1,1,1,0;0,0,0,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;106;-1135.893,-2098.685;Inherit;False;3;3;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;2;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SaturateNode;108;-967.217,-2099.102;Inherit;False;1;0;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.RegisterLocalVarNode;111;-1781.281,-943.2229;Inherit;False;AlbedoColor;-1;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.RangedFloatNode;97;-2403.95,-2174.488;Inherit;False;Property;_LTPow;LTPow;23;0;Create;True;0;0;0;False;0;False;1;0;0.01;100;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;99;-2408.382,-2093.29;Inherit;False;Property;_LTScale;LTScale;22;0;Create;True;0;0;0;False;0;False;1;0.01;0.01;100;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RegisterLocalVarNode;61;-1506.052,800.632;Inherit;False;VariationMask;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.GetLocalVarNode;43;-1286.967,-634.3631;Inherit;False;48;MeSmAO;1;0;OBJECT;;False;1;FLOAT4;0
+Node;AmplifyShaderEditor.GetLocalVarNode;114;-2271.044,-2492.881;Inherit;False;48;MeSmAO;1;0;OBJECT;;False;1;FLOAT4;0
+Node;AmplifyShaderEditor.ComponentMaskNode;115;-2084.351,-2493.055;Inherit;False;False;False;True;False;1;0;FLOAT4;0,0,0,0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;101;-2156.558,-2408.831;Inherit;False;Property;_LTAmbine;LTAmbine;24;0;Create;True;0;0;0;False;0;False;1;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;116;-1868.35,-2445.055;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.PowerNode;117;-2650.521,-2018.47;Inherit;False;False;2;0;FLOAT;0;False;1;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;118;-2448.521,-1975.47;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SamplerNode;78;-3079.821,-1881.999;Inherit;True;Property;_TextureSample7;Texture Sample 7;19;0;Create;True;0;0;0;False;0;False;-1;e1f577742d975cc4eb9f27463b788e7c;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;119;-3070.521,-1975.47;Inherit;False;Property;_TTTPOW;TTTPOW;27;0;Create;True;0;0;0;False;0;False;1;1;0;10;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;103;-1828.973,-2173.229;Inherit;False;Property;_LTAttenuation;LTAttenuation;26;0;Create;True;0;0;0;False;0;False;0.5;0.5;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;120;-2747.254,-1908.925;Inherit;False;Property;_TTTScale;TTTScale;28;0;Create;True;0;0;0;False;0;False;1;0;0;30;0;1;FLOAT;0
+Node;AmplifyShaderEditor.GetLocalVarNode;107;-1495.828,-1934.003;Inherit;False;111;AlbedoColor;1;0;OBJECT;;False;1;COLOR;0
+Node;AmplifyShaderEditor.RegisterLocalVarNode;104;-828.6156,-2105.043;Inherit;False;TestColor;-1;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SaturateNode;121;-2274.382,-1969.79;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RegisterLocalVarNode;122;-2129.479,-1975.49;Inherit;False;Thichness;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.GetLocalVarNode;109;-2171.337,-1429.634;Inherit;False;104;TestColor;1;0;OBJECT;;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleAddOpNode;110;-1890.738,-1372.549;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.GetLocalVarNode;124;-1738.603,-2082.837;Inherit;False;122;Thichness;1;0;OBJECT;;False;1;FLOAT;0
+Node;AmplifyShaderEditor.GetLocalVarNode;125;-2131.502,-1550.784;Inherit;False;122;Thichness;1;0;OBJECT;;False;1;FLOAT;0
+Node;AmplifyShaderEditor.LerpOp;123;-1908.103,-1545.837;Inherit;False;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
 WireConnection;10;0;9;0
 WireConnection;10;1;33;0
 WireConnection;11;0;15;0
@@ -1932,7 +2108,6 @@ WireConnection;54;1;58;0
 WireConnection;57;2;55;0
 WireConnection;58;2;56;0
 WireConnection;69;0;59;0
-WireConnection;61;0;69;0
 WireConnection;59;0;53;1
 WireConnection;59;1;60;0
 WireConnection;60;0;54;2
@@ -1946,8 +2121,49 @@ WireConnection;23;1;10;0
 WireConnection;64;0;23;0
 WireConnection;64;1;62;0
 WireConnection;64;2;63;0
-WireConnection;24;0;64;0
+WireConnection;24;0;84;0
 WireConnection;70;0;24;0
 WireConnection;25;0;70;0
+WireConnection;84;1;64;0
+WireConnection;84;0;110;0
+WireConnection;89;0;87;0
+WireConnection;89;1;90;0
+WireConnection;88;0;86;0
+WireConnection;88;1;89;0
+WireConnection;93;0;88;0
+WireConnection;93;1;94;0
+WireConnection;92;0;91;0
+WireConnection;92;1;93;0
+WireConnection;95;0;92;0
+WireConnection;96;0;95;0
+WireConnection;96;1;97;0
+WireConnection;98;0;96;0
+WireConnection;98;1;99;0
+WireConnection;100;0;116;0
+WireConnection;100;1;98;0
+WireConnection;102;0;100;0
+WireConnection;102;1;103;0
+WireConnection;102;2;124;0
+WireConnection;106;0;102;0
+WireConnection;106;1;105;0
+WireConnection;106;2;107;0
+WireConnection;108;0;106;0
+WireConnection;111;0;64;0
+WireConnection;61;0;69;0
+WireConnection;115;0;114;0
+WireConnection;116;0;115;0
+WireConnection;116;1;101;0
+WireConnection;117;0;78;1
+WireConnection;117;1;119;0
+WireConnection;118;0;117;0
+WireConnection;118;1;120;0
+WireConnection;104;0;108;0
+WireConnection;121;0;118;0
+WireConnection;122;0;121;0
+WireConnection;110;0;109;0
+WireConnection;110;1;64;0
+WireConnection;123;0;64;0
+WireConnection;123;1;109;0
+WireConnection;123;2;125;0
 ASEEND*/
-//CHKSM=BCD94D101F8DFFAE0D9CFE9EAC4548BA58B49F5B
+//CHKSM=9F83DD29FDFDA0A3E5BCA04BE677AE6BE3EBF17A
