@@ -103,6 +103,7 @@ Material:
     - _BumpScale: 1
     - _CHANGECOL: 0
     - _CULL: 2
+    - _ColorScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
@@ -127,6 +128,7 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _Threshold: 0.5
+    - _UseMaskTexAO: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     - __dirty: 0

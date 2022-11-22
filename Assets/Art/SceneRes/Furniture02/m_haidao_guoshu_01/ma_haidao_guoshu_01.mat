@@ -24,7 +24,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Albedo:
-        m_Texture: {fileID: 2800000, guid: 62265a68a3275e242ae5a1d8d493a9d2, type: 3}
+        m_Texture: {fileID: 2800000, guid: e582bd0cb71967e4eb35f6f14a8a7bb9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -71,6 +71,14 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Variation1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _VariationMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _ANIMATIONOFF: 0
     - _AOON: 1
@@ -96,8 +104,12 @@ Material:
     - _GrassWindDensity2: 0.05
     - _HDRrange: 1
     - _METALLIC: 0
+    - _MaxNew: 1
+    - _MaxOld: -1
     - _Metalic: 0
     - _Metallic: 0
+    - _MinNew: 0
+    - _MinOld: 0
     - _Normal_Scale: 1
     - _OcclusionStrength: 0
     - _QueueOffset: 0
@@ -131,6 +143,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _TilingOffset: {r: 1, g: 1, b: 0, a: 0}
+    - _VariationColor: {r: 0.9339623, g: 0.82505447, b: 0.39649338, a: 0}
     - _darkcolor: {r: 1, g: 1, b: 1, a: 1}
     - _darkrange: {r: 1, g: 1, b: 0, a: 0}
     - _reflectcol: {r: 0, g: 0, b: 0, a: 0.83137256}
