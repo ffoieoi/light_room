@@ -80,6 +80,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SandGlitter:
+        m_Texture: {fileID: 2800000, guid: 47baebd9de16ba941b9b360a5f645e53, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -109,15 +113,21 @@ Material:
     - _Cutoff: 0.5
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _GitterRange: 20
+    - _GlitterPow: 1.8
+    - _GlitterScale: 0.668
+    - _GlitterSpeed: 0.1
+    - _GlitterTilling: 23.5
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Grass: 27.38
-    - _Layer01_Tilling: 3
+    - _Layer01_Tilling: 20
     - _Layer02_Tilling: 20
     - _Layer03_Tilling: 3
     - _MaxSoil: 1.87
     - _Metallic: 0
+    - _MinShiny: 20
     - _MinSoil: -1.64
     - _NormalSale_Layer01: 1
     - _NormalSale_Layer02: 0.26
@@ -132,6 +142,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _UseAuto: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
